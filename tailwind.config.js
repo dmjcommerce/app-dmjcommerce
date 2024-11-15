@@ -8,7 +8,10 @@ export default {
         './resources/**/*.blade.php',
         './resources/**/*.js',
         './resources/**/*.vue',
+        'node_modules/preline/dist/*.js',
     ],
+    //Con esto se desactiva el modo oscuro
+    darkMode: 'class',
     theme: {
         extend: {
             fontFamily: {
@@ -16,5 +19,7 @@ export default {
             },
         },
     },
-    plugins: [],
+    plugins: [
+        require('preline/plugin'),
+    ],
 };

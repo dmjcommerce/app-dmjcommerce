@@ -21,7 +21,6 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'username',
         'role',
     ];
 
@@ -46,5 +45,10 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+    //Se define la relacion con las ordenes de manera que a un usuario le puedan 
+    //pertenecer varias ordenes, por eso el hasMany
+    public function orders(){
+        return $this->hasMany(order::class);
     }
 }

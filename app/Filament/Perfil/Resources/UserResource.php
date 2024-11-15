@@ -4,6 +4,7 @@ namespace App\Filament\Perfil\Resources;
 
 use App\Filament\Perfil\Resources\UserResource\Pages;
 use App\Filament\Perfil\Resources\UserResource\RelationManagers;
+use App\Filament\Perfil\Resources\UserResource\RelationManagers\OrdersRelationManager;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -23,6 +24,10 @@ class UserResource extends Resource
     protected static ?string $navigationGroup = 'Administracion';
     //Cambia el icono
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
+    //Busqueda global
+    protected static ?string $recordTitleAttribute = 'name';
+    //Con esto se ordena el recurso en el panel
+    protected static ?int $navigationSort = 1;
     public static function form(Form $form): Form
     {
         return $form
@@ -31,9 +36,6 @@ class UserResource extends Resource
                 //Se ponen tres columnas en la seccion.
                 ->columns(3)
                 ->schema([
-                Forms\Components\TextInput::make('username')
-                ->required()
-                ->maxLength(255),
                 Forms\Components\TextInput::make('name')
                 ->required()
                 ->maxLength(255),
@@ -67,9 +69,6 @@ class UserResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('username')
-                ->sortable()
-                ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('role')
                 ->sortable()
                 ->searchable(),
@@ -107,8 +106,13 @@ class UserResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            OrdersRelationManager::class
         ];
+    }
+
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['role','email'];
     }
 
     public static function getPages(): array

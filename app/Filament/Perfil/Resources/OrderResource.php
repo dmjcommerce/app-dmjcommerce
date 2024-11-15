@@ -4,6 +4,7 @@ namespace App\Filament\Perfil\Resources;
 
 use App\Filament\Perfil\Resources\OrderResource\Pages;
 use App\Filament\Perfil\Resources\OrderResource\RelationManagers;
+use App\Filament\Perfil\Resources\OrderResource\RelationManagers\AddressRelationManager;
 use App\Models\Order;
 use App\Models\product;
 use Filament\Forms;
@@ -31,9 +32,9 @@ use Illuminate\Support\Number;
 class OrderResource extends Resource
 {
     protected static ?string $model = Order::class;
-
+    protected static ?string $navigationGroup = 'Administracion';
     protected static ?string $navigationIcon = 'heroicon-o-shopping-bag';
-
+    protected static ?int $navigationSort = 2;
     public static function form(Form $form): Form
     {
         return $form
@@ -72,21 +73,21 @@ class OrderResource extends Resource
                             'processing'=>'Processing',
                             'shipped'=>'Shipped',
                             'delivered'=>'Delivered',
-                            'cancelled'=>'Canceled'
+                            'canceled'=>'Cancelled'
                         ])
                         ->colors([
                             'new'=>'info',
                             'processing'=>'warning',
                             'shipped'=>'success',
                             'delivered'=>'success',
-                            'cancelled'=>'danger'
+                            'canceled'=>'danger'
                         ])
                         ->icons([
                             'new'=>'heroicon-m-sparkles',
                             'processing'=>'heroicon-m-arrow-path',
                             'shipped'=>'heroicon-m-truck',
                             'delivered'=>'heroicon-m-check-badge',
-                            'cancelled'=>'heroicon-m-x-circle'
+                            'canceled'=>'heroicon-m-x-circle'
                         ]),
 
                         Select::make('currency')
@@ -213,7 +214,7 @@ class OrderResource extends Resource
                     'processing'=>'Processing',
                     'shipped'=>'Shipped',
                     'delivered'=>'Delivered',
-                    'cancelled'=>'Canceled'
+                    'canceled'=>'Cancelled'
                 ])
                 ->searchable()
                 ->sortable(),
@@ -248,7 +249,9 @@ class OrderResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            //Dentro de esta funcion se obtiene la relacion creada con address para que podamos
+            //Crear direcciones en las ordenes.
+            AddressRelationManager::class
         ];
     }
     //Esta funcion es para mostrar la cantidad de ordenes en el panel de ordenes 
